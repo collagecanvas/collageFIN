@@ -29,7 +29,7 @@ app.use(express.json({ limit: "15mb" }));
 
 app.use((req, res, next) => {
   // Use the policy you need. 'same-origin' is the most restrictive/secure.
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin'); 
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups'); 
   next();
 });
 
