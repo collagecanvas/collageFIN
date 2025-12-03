@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>160Library — Binder & Public</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="style/style_main.css" />
+  <link rel="stylesheet" href="style/style_library.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <h1 class="app-title" id="app-title">Library</h1>
+    </header>
+
+    <!-- LIBRARY TABS -->
+    <section class="library-tabs">
+      <button class="library-tab active" data-tab="binder" id="tab-binder">
+        Binder
+      </button>
+      <button class="library-tab" data-tab="public" id="tab-public">
+        Public
+      </button>
+      <button class="library-tab" data-tab="private" id="tab-private">
+        Private
+      </button>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main library-main">
+
+      <!-- LIBRARY CONTENT (MY stuff) -->
+      <section class="library-content">
+
+        <!-- BINDER SECTION -->
+        <section class="binder-section" id="binder-section">
+          <div class="binder-card">
+            <div class="binder-cover"></div>
+            <p class="binder-title">My Binder</p>
+
+            <button class="buttonmaker small" id="binder-edit-btn">
+              Edit binder
+            </button>
+          </div>
+        </section>
+
+        <!-- PUBLIC SECTION (my public collages) -->
+        <section class="public-section" id="public-section" style="display:none;">
+          <div class="public-grid" id="public-grid"></div>
+          <div class="public-loading" id="public-loading">
+            <div class="loader"></div>
+          </div>
+        </section>
+
+        <!-- PRIVATE SECTION (my private collages) -->
+        <section class="public-section" id="private-section" style="display:none;">
+          <div class="public-grid" id="private-grid"></div>
+          <div class="public-loading" id="private-loading">
+            <div class="loader"></div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- EXPLORE SECTION (everyone's public) -->
+      <section class="explore-section" id="explore-section" style="display:none;">
+        <div class="public-grid" id="explore-grid"></div>
+        <div class="public-loading" id="explore-loading">
+          <div class="loader"></div>
+        </div>
+      </section>
+
+      <!-- LIKED SECTION (what I liked) -->
+      <section class="public-section" id="liked-section" style="display:none;">
+        <div class="public-grid" id="liked-grid"></div>
+        <div class="public-loading" id="liked-loading">
+          <div class="loader"></div>
+        </div>
+      </section>
+
+
+      <!-- PROFILE SECTION -->
+      <section class="profile-section" id="profile-section" style="display:none;">
+        <div class="profile-avatar-container">
+          <div class="profile-avatar" id="profile-avatar-initials">CC</div>
+        </div>
+       
+        <div class="profile-card">
+          <header class="profile-header">
+            <h2 class="profile-name" id="profile-display-name-text">Guest user</h2>
+            <p class="profile-user-id" id="profile-user-id">user_id: —</p>
+          </header>
+
+          <section class="profile-body">
+            <dl class="profile-details">
+              <div>
+                <dt>Display Name</dt>
+                <dd id="profile-display-name">—</dd>
+              </div>
+
+              <div>
+                <dt>Email</dt>
+                <dd id="profile-email">guest@example.com</dd>
+              </div>
+
+              <div>
+                <dt>Bio</dt>
+                <dd id="profile-bio">—</dd>
+              </div>
+
+              <div>
+                <dt>Member since</dt>
+                <dd id="profile-created-at">—</dd>
+              </div>
+            </dl>
+          </section>
+
+          <footer class="profile-footer">
+            <button class="buttonmaker small" id="profile-manage-account">
+              Manage account
+            </button>
+            <button class="buttonmaker small" id="profile-logout">
+              Log out
+            </button>
+          </footer>
+
+        </div>
+      </section>
+
+
+    </main>
+
+
+    <!-- COLLAGE MODAL -->
+   <div class="collage-modal is-hidden" id="collage-modal">
+    <div class="collage-modal-inner">
+
+      <div class="collage-modal-toprow">
+        <button
+          class="collage-like-button"
+          id="collage-like-button"
+          type="button"
+        >
+          <i class="ri-heart-line"></i>
+        </button>
+        <span class="collage-owner-name" id="collage-owner-name">user</span>
+      </div>
+
+      <div class="collage-modal-image-wrapper">
+        <div class="binder-flip-wrapper">
+          <div class="binder-flip-inner" id="binder-flip-inner">
+            <div class="binder-page binder-page-front">
+              <img id="collage-modal-image" alt="Selected collage preview" />
+            </div>
+            <div class="binder-page binder-page-back">
+              <img id="binder-back-image" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="public-binder-chip collage-modal-binder-chip binder-flip-hint-chip"
+          id="collage-modal-binder-chip"
+          style="display: none;"
+        >
+          <i class="ri-stack-line"></i>
+          <span class="binder-pages-count">0</span>
+          <span class="binder-flip-hint-text">Flip me</span>
+        </div>
+    </div>
+    <div class="collage-modal-actions" id="collage-modal-actions">
+    </div>
+
+    <button class="buttonmaker small" id="collage-modal-close">
+      Close
+    </button>
+  </div>
+</div>
+
+    <!-- BINDER COVER SOURCE MODAL -->
+    <div class="binder-cover-source-modal is-hidden" id="binder-cover-source-modal">
+      <div class="binder-cover-source-inner">
+        <h3>Select cover image from:</h3>
+
+        <button class="buttonmaker small" id="cover-source-phone">
+          From phone
+        </button>
+
+        <button class="buttonmaker small" id="cover-source-current">
+          Current edit binder
+        </button>
+
+        <button class="buttonmaker small" id="cover-source-close">
+           Close
+        </button>
+      </div>
+    </div>
+
+
+    <!-- BINDER EDIT MODAL -->
+    <div class="binder-edit-modal is-hidden" id="binder-edit-modal">
+      <div class="binder-edit-inner">
+        <h2 class="binder-edit-title">Set up your binder</h2>
+        <section class="binder-edit-section">
+          <h3>1. Choose pages</h3>
+          <p class="binder-edit-hint">Tap to select up to 10 collages.</p>
+          <div class="binder-collage-list" id="binder-collage-list"></div>
+          <button class="buttonmaker small" id="binder-choose-cover-btn">
+            Choose cover
+          </button>
+          <input
+            type="file"
+            id="binder-cover-file-input"
+            accept="image/*"
+            class="binder-cover-file-input"
+          />
+          <div class="binder-cover-choice-list" id="binder-cover-choice-list"></div>
+        </section>
+
+
+        <div class="binder-edit-actions">
+          <button class="buttonmaker small" id="binder-save-private-btn">
+            Save private
+          </button>
+          <button class="buttonmaker small" id="binder-save-public-btn">
+            Save &amp; publish
+          </button>
+          <button class="buttonmaker small" id="binder-modal-close">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- BOTTOM NAV BAR -->
+    <nav class="bottom-nav">
+      <a href="#" class="bottom-nav-item home-nav">
+        <i class="ri-home-5-line bottom-nav-icon"></i>
+        <span class="bottom-nav-label">Home</span>
+      </a>
+
+      <a href="library.html" class="bottom-nav-item library-nav active">
+        <i class="ri-booklet-line bottom-nav-icon"></i>
+        <span class="bottom-nav-label">Library</span>
+      </a>
+
+      <a href="#" class="bottom-nav-item explore-nav">
+        <i class="ri-search-line bottom-nav-icon"></i>
+        <span class="bottom-nav-label">Explore</span>
+      </a>
+
+      <a href="#" class="bottom-nav-item liked-nav">
+        <i class="ri-heart-line bottom-nav-icon"></i>
+        <span class="bottom-nav-label">Liked</span>
+      </a>
+
+      <a href="#" class="bottom-nav-item profile-nav">
+        <i class="ri-user-3-line bottom-nav-icon"></i>
+        <span class="bottom-nav-label">Profile</span>
+      </a>
+    </nav>
+
+  </div>
+   <audio
+    id="binder-flip-sfx"
+    src="media/flippage.mp3"
+    preload="auto"
+  ></audio>
+  <script src="auth.js"></script>
+  <script src="library.js"></script>
+  <script src="binder.js"></script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+https://drive.google.com/drive/folders/1aFobfy8BkGRjNqVsLuHHwLNiiLQyATjz?usp=sharing
+
+how to run testing the google login optiona
+before run server
+
+run this: 
+npm install google-auth-library -enter
+then npm install dotenv -enter
+then run node server.js as usual
+
+FEATURES GROUP
+1. authmanager: everything related to user identity
+login
+logout
+save auth token
+check if logged in
+“if not logged in, show warning”
+
+2. collagemaker : everything related to collage creation
+adding uploaded images
+previewing images
+arranging layers
+preparing final collage JSON
+sending to backend (via ApiClient)
+
+3. previewmanager: display logic
+switching screens
+hiding/showing sections
+activating tabs
+controlling the flow:
+Create → Preview → Publish/Save → Library
+
+4. apiclient: front-end connector to backend
+calling backend endpoints
+GET / POST / PUT / DELETE
+uploading files
+sending JSON
+reading responses
+
+5. librarymanager
+loading public collages
+loading private collages
+rendering the grid (Public screen)
+rendering user’s creations (Private screen)
+
+download and read in vscode for better format
+== google account == 
+For login to google cloud developer tools
+Collagecanvas.info@gmail.com
+Datebday: 01.01.2010
+WhateverPassword01
+
+
+== app modules ==
+1. authmanager: everything related to user identity
+login
+logout
+save auth token
+check if logged in
+“if not logged in, show warning”
+
+2. collagemaker : everything related to collage editor
+previewing images
+arranging layers
+preparing final collage JSON
+sending to backend (via ApiClient)
+
+3. previewmanager: display logic
+switching screens
+hiding/showing sections
+activating tabs
+controlling the flow:
+Create → Preview → Publish/Save → Library
+
+4. API Service: service layer where front-end connect to backend
+calling backend endpoints
+GET / POST / PUT / DELETE
+uploading files
+sending JSON
+reading responses
+
+5. librarymanager: placeholder or gallery
+loading public collages
+loading private collages
+rendering the grid (Public screen)
+rendering user’s creations (Private screen)
+
+
+
+== file structure ==
+
+COLLAGESTUDIO/
+├── backend/
+│   ├── collageoutput/
+│   │   └── (generated PNGs live here)
+│   ├── db/
+│   │   ├── collagecanvas.db
+│   │   └── collagecanvas.sqbpro
+│   ├── node_modules/
+│   ├── package-lock.json
+│   ├── package.json
+│   └── server.js
+│
+├── media/
+│   ├── background/
+│   │   └── (background images)
+│   ├── images/
+│   │   └── (sticker/photo assets)
+│   ├── thumbnail/
+│   │   └── (app icon and dummy thumbnails)
+│   ├── flippage.mp3
+│   └── spiral.png
+│
+├── style/
+│   ├── style_auth.css
+│   ├── style_library.css
+│   └── style_main.css
+│
+├── auth.js
+├── binder.js
+├── index.html
+├── library.html
+├── library.js
+├── main.js
+├── manifest.json
+├── README.md
+└── WORKINGNOTE.txt
+
+
+1. auth.js
+Client auth logic:
+    Login / Signup form handling
+    Error handling
+    Guest mode
+    LocalStorage persistence
+    Tab switching
+    Password reveal
+    Google Sign-In skeleton
+    Bridge to main.js: setLoggedInUser() + setLoggedOut()
+
+2. server.js
+Express + SQLite backend:
+    Users
+    Auth (local + Google stub)
+    Collages
+    Likes
+    Binders
+    Binder-Collages mapping
+    Assets API
+    Static serving and fallback routing
+
+3. main.js
+The collage-studio engine:
+    Layer creation
+    Drag/pinch/rotate=
+    Text layers
+    Background selection
+    Modal handling
+    Canvas rendering
+    Capture canvas → PNG
+    Save → server
+    Done → final modal
+    Create more flow
+    Auth bridging
+    Restore user
+    Warn on unsaved exit to Library
+
+4. library.js
+The Library page controller:
+    Loads Public / Private / Binders / Explore / Liked
+    Handles profile
+    Handles binder click → open modal
+    Loads collages into popup modal
+    Like/unlike from modal
+    Scroll behavior, no-scroll class
+    Profile update wiring
+
+5. binder.js
+The entire binder editor logic:
+    Binder state
+    Choosing cover
+    Picking collages
+    Rendering flipbook
+    Saving/updating binder
+    Modal show/hide
+    Paging logic
+    Flip sound triggers, etc.
+
+6. style-library.css
+All Library UI styles:
+    Public grid
+    Binder cards
+    Binder edit modal
+    Flipbook animation
+    Explore & Liked section styles
+    Profile card styles
+    Scroll behavior tweaks
+
+7. style-main.css
+Collage studio styles:
+    Canvas frame
+    Layer item outlines
+    Action buttons
+    Sliders
+    Text tools
+    Final modal
+    App layout (top bar, bottom nav)
+    All modal UI
+
+8. style-auth.css
+All Authentication UI styles:
+    Fullscreen auth overlay
+    Auth card container
+    Header 
+    Login / Signup panels
+    Form input fields
+    Submit button
+    Social login buttons
+    Footer actions
+    Error text
+    Password field wrapper with toggle
+
+
+== collage metadata ==
+id - unique collage ID (pic01, pic02, ...)
+ownerUserID - creator (8 digits with format of user01+random number/alphabet, user02+random number/alphabet, )
+visibility - "public" or "private"
+imageUrl  – frontend/collageoutput
+createdAt, updatedAt
+
+id - unique collage ID (pic01, pic02, ...) >> "testpic001_x8w" "testpic002_a02" 
+ownerUserID - creator (8 digits with format of user01+random number/alphabet, user02+random number/alphabet) >> "user01_ zu9" ; "user02_p9q"
+visibility - "public" or "private" 
+imageUrl – frontend/collageoutput 
+createdAt, updatedAt
+
+the above will be stored at backend/data/collagemetadata.json  (later will be replaced with external db)
+
+API ENDPOINTs - Route List
+1. Create a collage (Publish / Private)
+    - POST /api/collages
+    - Request:
+        * image (file or base64)
+        * visibility ("public" or "private")
+    - Response: created collage record (with id, imagePath, etc.)
+
+2. List public collages (Library → PUBLIC)
+    - GET /api/collages?visibility=public
+    - Response: [{ id, imagePath, ownerUserId, ... }, ...]
+
+3. List my private collages (Library → PRIVATE)
+    - GET /api/collages?visibility=private&owner=user01xy345ca
+
+4. Change visibility
+    - PUT /api/collages/:id
+
+5. Remove or delete collage
+    - DELETE /api/collages/:id
+
+===================================================
+
+PRIVATE : POST designated user's output set visibility to PRIVATE
+PUBLIC : POST designated user's output set visibility to PUBLIC
+EXPLORE : POST all user's output set visibility to PUBLIC
+
+
+===================================================
+
+**Binder Creation Flow** 
+1. User picks 5–10 collages for the binder (like adding songs to a playlist).
+2. Before saving, show a popup: “CHOOSE IMAGE AS COVER”.
+3. Cover can come from:
+    - A collage already inside the binder
+    - A different collage from their library
+    - An image from phone gallery (upload)
+4. After that user choose:
+    - SAVE PUBLISH → Binder appears in Public section as a new item
+    - SAVE PRIVATE → Binder appears in Private section as a new item
+5. In Public / Private grid:
+    - Normal collages look like now.
+    - Binder entries look similar but have a tiny binder icon at bottom-right, aligned with the owner-chip on the left.
+
+
+collageID x binderID - logic
+⚪collageID
+    🔸Single image post
+    🔸Can be: like/unlike, delete, set visibility = "public" | "private"
+⚪binderID
+    🔸 Remix post (flipbook built from multiple collages)
+    🔸 Can also: like/unlike, delete, set visibility = "public" | "private"
+    🔸 Binder does not auto-force its collages to public or private.
+⚪Public / Private tabs:
+    🔸Show both:
+        - posts with kind: "collage"
+        - posts with kind: "binder"
+    🔸Filter only by that post’s own visibility, not its ingredients.
+
+===================================================
+
+**Database Structure**
+Filepath: backend/db/collagecanvas.db
+ID: collagecanvas_db
+Name: College Canvas DB
+
+
+Table 1: users - Stores each user's profile information.
+| Field          | Type             | Notes                                            |
+| -------------- | ---------------- | ------------------------------------------------ |
+| `id`           | TEXT PRIMARY KEY | Example: `user03_zu9`. App-level unique user ID. |
+| `email`        | TEXT UNIQUE      | User’s login email (Google).                     |
+| `display_name` | TEXT             | Shown on Profile, Public page, etc.              |
+| `avatar_url`   | TEXT             | Optional profile picture URL.                    |
+| `bio`          | TEXT             | User-written profile bio.                        |
+| `created_at`   | TEXT             | Timestamp auto-filled by DB.                     |
+| `updated_at`   | TEXT             | Timestamp auto-filled by DB.                     |
+
+Table 2: auth_accounts - Links app users to external identity providers (Google Sign-In).
+| Field              | Type                     | Notes                             |
+| ------------------ | ------------------------ | --------------------------------- |
+| `id`               | INTEGER PK AUTOINCREMENT | Internal key.                     |
+| `user_id`          | TEXT FK → users.id       | The app user who owns this login. |
+| `provider`         | TEXT                     | Example: `"google"`.              |
+| `provider_user_id` | TEXT                     | Google `sub` ID (unique).         |
+| `created_at`       | TEXT                     | Timestamp.                        |
+
+Table 3: collages - Stores metadata for every collage (the “posts” of your app).
+| Field           | Type               | Notes                             |
+| --------------- | ------------------ | --------------------------------- |
+| `id`            | TEXT PRIMARY KEY   | Collage ID: e.g. `collage_17345`  |
+| `owner_user_id` | TEXT FK → users.id | User who created the collage      |
+| `title`         | TEXT               | Optional user-set title           |
+| `description`   | TEXT               | Optional caption/notes            |
+| `image_url`     | TEXT               | Path in `collageoutput/` folder   |
+| `visibility`    | TEXT               | `'public'` or `'private'`         |
+| `design_json`   | TEXT               | Raw JSON for re-edit / layer data |
+| `created_at`    | TEXT               | Timestamp                         |
+| `updated_at`    | TEXT               | Timestamp                         |
+| `is_deleted`    | INTEGER            | 0 = active, 1 = soft deleted      |
+
+Table 4: likes - Tracks which user has liked which collage.
+| Field        | Type                  | Notes         |
+| ------------ | --------------------- | ------------- |
+| `user_id`    | TEXT FK → users.id    | Who liked it  |
+| `collage_id` | TEXT FK → collages.id | Which collage |
+| `created_at` | TEXT                  | Timestamp     |
+
+
+
+Table: binders – Stores binder metadata 
+
+Table 5: Collage playlist similar
+| Field             | Type                  | Notes                                         |
+| ----------------- | --------------------- | --------------------------------------------- |
+| `id`              | TEXT PRIMARY KEY       | Binder ID                                     |
+| `owner_user_id`   | TEXT FK → users.id     | User who owns the binder                      |
+| `cover_collage_id`| TEXT FK → collages.id  | Collage image used as binder cover (optional) |
+| `visibility`      | TEXT                   | `public` or `private`                         |
+| `created_at`      | TEXT                   | Timestamp                                      |
+| `updated_at`      | TEXT                   | Timestamp                                      |
+
+
+Table 6: binder_collages – which collages are in it + order
+
+| Field        | Type                     | Notes                                             |
+| ------------ | ------------------------- | ------------------------------------------------- |
+| `binder_id`  | TEXT FK → binders.id      | Which binder                                      |
+| `collage_id` | TEXT FK → collages.id     | Collage included in this binder                   |
+| `position`   | INTEGER                   | Display order (1…N inside binder)                 |
+| PRIMARY KEY  | (`binder_id`, `position`) | Guarantees unique sorted order per binder         |
+
+
+
+NOTE. during testing when GET POST UPDATE DELETE, the collegecanvas.db cannot be opened. it will fail the action. do the action then open db to check it the action is success. 
+
+
+
+
+
+DO NOT Use
+
+== hosted server ==
+https://cloud.appwrite.io/console/organization-692832bd002b51732d68
+login details
+Collagecanvas.info@gmail.com
+WhateverPassword01
+
+MongoDB Atlas 
+DB user admin
+user name: collagecanvasinfo_db_user
+91AR6lWQzjoAKuji
+Conncection String: 
+mongodb+srv://collagecanvasinfo_db_user:ZAOplSwzA7SxI6h0@cluster0.aktm5uh.mongodb.net/collagecanvas?retryWrites=true&w=majority&appName=Cluster0
+
+const uri = "mongodb+srv://collagecanvasinfo_db_user:ZAOplSwzA7SxI6h0@cluster0.aktm5uh.mongodb.net/?appName=Cluster0";
+
+JUST NOTE from MONGODB AUTO
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://collagecanvasinfo_db_user:ZAOplSwzA7SxI6h0@cluster0.aktm5uh.mongodb.net/?appName=Cluster0";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
+
+install MongoDB
+run this in terminal npm install mongodb

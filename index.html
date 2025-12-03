@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>210Collage Canvas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+ <!-- <script src="https://accounts.google.com/gsi/client" defer></script> -->
+  <script src="https://accounts.google.com/gsi/client" **onload="initializeGoogleAuth()"**></script>
+
+  <!-- Main UI styles -->
+  <link rel="stylesheet" href="style/style_main.css" />
+  <link rel="stylesheet" href="style/style_auth.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- iOS support -->
+  <link rel="apple-touch-icon" href="/media/thumbnail/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+</head>
+<body>
+
+  <!-- AUTHENTICATION SECTION -->
+  <div class="authentication" id="authentication">
+    <div class="auth-card">
+
+      <header class="auth-header">
+        <h1 class="auth-title">Welcome to Collage Canvas</h1>
+        <div class="auth-switch">
+          <button class="auth-switch-btn active" id="auth-tab-login" data-auth-tab="login">
+            Log in
+          </button>
+          <button class="auth-switch-btn" id="auth-tab-signup" data-auth-tab="signup">
+            Sign up
+          </button>
+        </div>
+        <p class="auth-subtitle">Log in or sign up to save and publish your collages.</p>
+      </header>
+
+      <main class="auth-body">
+        <!-- LOGIN PANEL -->
+        <section class="auth-panel auth-panel--login" id="auth-panel-login">
+          <form class="auth-form" id="login-form" autocomplete="on">
+            <h2 class="auth-section-title">Login with email</h2>
+
+            <label class="auth-field">
+              <span>Email</span>
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+            </label>
+
+            <label class="auth-field">
+              <span>Password</span>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  placeholder="••••••••"
+                  required
+                />
+                <i class="ri-eye-line toggle-password" data-target="login-password"></i>
+              </div>
+            </label>
+
+            <button type="submit" class="buttonmaker accent auth-submit-btn" id="login-submit">
+              Log in
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span>or continue with</span>
+          </div>
+
+          <div class="auth-social-group">
+            <button class="auth-social-btn" id="login-google">
+              Continue with Google
+            </button>
+          </div>
+        </section>
+
+        <!-- SIGNUP PANEL -->
+        <section class="auth-panel auth-panel--signup" id="auth-panel-signup" hidden>
+          <form class="auth-form" id="signup-form" autocomplete="on">
+            <h2 class="auth-section-title">Create an account</h2>
+
+            <label class="auth-field">
+              <span>Email or phone</span>
+              <input
+                type="text"
+                id="signup-identifier"
+                name="identifier"
+                placeholder="you@example.com / 08xxxxxxxxxx"
+                required
+              />
+            </label>
+
+            <label class="auth-field">
+              <span>Password</span>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="signup-password"
+                  name="password"
+                  placeholder="Minimum 8 characters"
+                  required
+                />
+                <i class="ri-eye-line toggle-password" data-target="signup-password"></i>
+              </div>
+            </label>
+
+            <label class="auth-field">
+              <span>Re-enter password</span>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="signup-password-confirm"
+                  name="password_confirm"
+                  placeholder="Repeat password"
+                  required
+                />
+                <i class="ri-eye-line toggle-password" data-target="signup-password-confirm"></i>
+              </div>
+            </label>
+
+            <button type="submit" class="buttonmaker accent auth-submit-btn" id="signup-submit">
+              Sign up
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span>or sign up with</span>
+          </div>
+
+          <div class="auth-social-group">
+            <button class="auth-social-btn" id="signup-google">
+              Sign up with Google
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="auth-footer">
+        <button class="auth-skip-btn" id="auth-skip">
+          Skip for now
+        </button>
+      </footer>
+
+      <p class="auth-error" id="auth-error" hidden></p>
+
+    </div>
+  </div>
+  <!-- END AUTHENTICATION SECTION -->
+
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="app">
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <h1 class="app-title">Collage Canvas</h1>
+
+      <div class="top-bar-right">
+        <button class="buttonmaker small" id="btn-clear-canvas">
+          Clear canvas
+        </button>
+
+        <!-- Hidden by default, shown when logged in -->
+        <a href="library.html" class="buttonmaker small" id="btn-go-library" style="display:none;text-decoration:none;">
+          Library
+        </a>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- CANVAS / COLLAGE AREA -->
+      <section class="canvas-section">
+        <div class="collagecanvas-frame">
+          <div class="collagecanvas" id="collagecanvas">
+            <p class="collagecanvas-placeholder" id="canvas-placeholder">
+              Collage canvas area<br />
+              (tap a button below to add images)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOOLS FOR SELECTED LAYER -->
+      <section class="layer-tools" id="layer-tools">
+        <p class="layer-tools-title">
+          On Mobile, drag with 1 finger; zoom/rotate with 2 fingers
+        </p>
+
+        <div class="layer-tools-row">
+          <label class="layer-slider-label">
+            Size
+            <input
+              id="scale-slider"
+              type="range"
+              min="50"
+              max="500"
+              value="50"
+            />
+          </label>
+
+          <label class="layer-slider-label">
+            Rotate
+            <input
+              id="rotate-slider"
+              type="range"
+              min="-180"
+              max="180"
+              value="-180"
+            />
+          </label>
+        </div>
+
+        <!-- TEXT TOOLS (visible only when a text layer is selected) -->
+        <div id="text-tools" class="text-tools-row" style="display: none;">
+          <button class="text-tool-btn" id="btn-text-edit">Edit text</button>
+          <button class="text-tool-btn" id="btn-text-font">Font</button>
+          <button class="text-tool-btn" id="btn-text-color">Color</button>
+        </div>
+
+        <div class="layer-tools-row layer-tools-row-actions">
+          <button class="layer-action-text" id="btn-layer-front">
+            Bring to front
+          </button>
+          <button class="layer-action-text" id="btn-layer-back">
+            Send to back
+          </button>
+          <button class="layer-action-text" id="btn-layer-delete">
+            Delete layer
+          </button>
+          <button class="layer-action-text" id="btn-remove-bg">
+            Remove background
+          </button>
+          <button class="layer-action-text" id="btn-add-text">
+            Add text
+          </button>
+        </div>
+      </section>
+
+      <!-- INPUT CONTROLS -->
+      <section class="controls-section">
+        <div class="control-row">
+          <label class="buttonmaker small">
+            From gallery
+            <input
+              id="file-input"
+              type="file"
+              accept="image/*"
+              multiple
+              hidden
+            />
+          </label>
+
+          <button class="buttonmaker small" id="btn-app-images">
+            Search images
+          </button>
+
+          <button class="buttonmaker small" id="btn-bg">
+            Background
+          </button>
+        </div>
+      </section>
+
+
+      <section class="actions-section">
+  <!-- normal state: only Done -->
+  <div class="actions-row" id="create-actions">
+    <button class="buttonmaker accent" id="btn-done">
+      Done
+    </button>
+  </div>
+
+  <!-- after Publish / Private: show this row -->
+  <div class="actions-row" id="create-more-row" style="display:none;">
+    <button class="buttonmaker accent" id="btn-create-more">
+      Create more
+    </button>
+  </div>
+
+  <p class="login-hint" id="login-hint">
+    You need to be logged in to publish or save this collage.
+  </p>
+</section>
+
+
+
+  <!-- MODALS: IMAGE PICKER -->
+  <div class="modal" id="image-modal">
+    <div class="modal-backdrop" data-close-modal="image-modal"></div>
+    <div class="modal-content">
+      <header class="modal-header">
+        <h2>Pick images</h2>
+        <button class="modal-close" data-close-modal="image-modal">×</button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-grid" id="image-modal-grid"></div>
+      </div>
+      <footer class="modal-footer">
+        <button class="buttonmaker small" id="image-modal-cancel" data-close-modal="image-modal">
+          Cancel
+        </button>
+        <button class="buttonmaker accent small" id="image-modal-add">
+          Add selected
+        </button>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- MODAL: BACKGROUND PICKER -->
+  <div class="modal" id="bg-modal">
+    <div class="modal-backdrop" data-close-modal="bg-modal"></div>
+    <div class="modal-content">
+      <header class="modal-header">
+        <h2>Choose background</h2>
+        <button class="modal-close" data-close-modal="bg-modal">×</button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-grid" id="bg-modal-grid"></div>
+      </div>
+      <footer class="modal-footer">
+        <button class="buttonmaker small" data-close-modal="bg-modal">
+          Cancel
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODAL: TEXT FONT -->
+  <div class="modal" id="text-font-modal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h2 class="modal-title">Choose font</h2>
+        <button class="modal-close" data-close-modal="text-font-modal">×</button>
+      </div>
+
+      <div class="text-font-list">
+        <button class="text-font-option" data-font='-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif'>
+          System Sans
+        </button>
+        <button class="text-font-option" data-font='"Georgia", "Times New Roman", serif'>
+          Classic Serif
+        </button>
+        <button class="text-font-option" data-font='"Comic Neue", "Comic Sans MS", cursive'>
+          Playful
+        </button>
+        <button class="text-font-option" data-font='"Courier New", monospace'>
+          Typewriter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TEXT COLOR -->
+  <div class="modal" id="text-color-modal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h2 class="modal-title">Text color</h2>
+        <button class="modal-close" data-close-modal="text-color-modal">×</button>
+      </div>
+
+      <div class="text-color-swatches">
+        <button class="text-color-swatch" data-color="#ffffff" style="background:#ffffff;"></button>
+        <button class="text-color-swatch" data-color="#f9c6ff" style="background:#f9c6ff;"></button>
+        <button class="text-color-swatch" data-color="#ffb3c6" style="background:#ffb3c6;"></button>
+        <button class="text-color-swatch" data-color="#ffd6a5" style="background:#ffd6a5;"></button>
+        <button class="text-color-swatch" data-color="#caffbf" style="background:#caffbf;"></button>
+        <button class="text-color-swatch" data-color="#bdb2ff" style="background:#bdb2ff;"></button>
+        <button class="text-color-swatch" data-color="#ffffff80" style="background:linear-gradient(135deg,#ffffff,#ffffff80);"></button>
+        <button class="text-color-swatch" data-color="#000000" style="background:#000000;"></button>
+      </div>
+
+      <div class="text-color-custom-row">
+        <label for="text-color-custom">Custom</label>
+        <input type="color" id="text-color-custom" />
+        <button id="text-color-apply">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: FINAL ACTIONS AFTER DONE -->
+  <div class="modal" id="final-modal">
+    <div class="modal-backdrop" data-close-modal="final-modal"></div>
+    <div class="modal-content">
+      <header class="modal-header">
+        <h2 id="final-modal-title">Finish collage</h2>
+        <button class="modal-close" data-close-modal="final-modal">×</button>
+      </header>
+
+      <div class="modal-body">
+        <p class="final-modal-message" id="final-modal-message">
+          You need to be logged in to publish or save this collage.
+        </p>
+
+        <!-- Actions shown when user IS logged in -->
+        <div class="final-modal-actions" id="final-modal-actions">
+          <button class="buttonmaker accent" id="final-modal-publish">
+            Publish
+          </button>
+          <button class="buttonmaker" id="final-modal-private">
+            Private
+          </button>
+          <!-- <button class="buttonmaker accent" id="final-modal-createmore">
+            Create more
+          </button> -->
+        </div>
+
+        <!-- Actions shown when user is NOT logged in -->
+        <div class="final-modal-guest" id="final-modal-guest" style="display:none;">
+          <button class="buttonmaker accent" id="final-modal-login-btn">
+            Go to login
+          </button>
+          <button class="buttonmaker small" data-close-modal="final-modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Scripts -->
+  <script type="module" src="main.js"></script>
+
+  <script type="module">
+    import { initAuth } from "./auth.js";
+    window.addEventListener("DOMContentLoaded", () => {
+      initAuth();
+    });
+  </script>
+
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+
+</body>
+</html>
