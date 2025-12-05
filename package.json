@@ -6,6 +6,12 @@
   "scripts": {
   "start": "node backend/server.js"
 },
+   "dependencies": {
+    "express": "^4.21.0",
+    "better-sqlite3": "^9.0.0",
+    "dotenv": "^16.4.5",
+    "google-auth-library": "^9.0.0"
+},
   "repository": {
   "type": "git",
   "url": " https://collagecanvas.github.io/collageFIN/collagecanvas.git"
