@@ -701,11 +701,13 @@ app.use((req, res) => {
 
 
 // ===== START SERVER =====
+// app.listen(PORT, () => {
+//   console.log(`Collage Canvas backend listening on http://localhost:${PORT}`);
+// });
+
 app.listen(PORT, () => {
-  console.log(`Collage Canvas backend listening on http://localhost:${PORT}`);
+  console.log("Server running on port " + PORT);
 });
-
-
 
 // ===== GOOGLE ID TOKEN LOGIN =====
 
