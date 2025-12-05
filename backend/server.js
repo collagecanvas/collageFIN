@@ -6,12 +6,7 @@ const path     = require("path");
 const fs       = require("fs");
 const Database = require("better-sqlite3");
 
-// ===== Google Login (GIS token verify) =====
-const { OAuth2Client } = require("google-auth-library");
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
 // ===== START SERVER =====
-const app  = express();
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
  console.log(`Server listening on port ${PORT}`);
@@ -21,6 +16,10 @@ app.listen(PORT, () => {
 app.use((req, res) => {
   res.sendFile(path.join(ROOT_DIR, "index.html"));
 });
+
+// ===== Google Login (GIS token verify) =====
+const { OAuth2Client } = require("google-auth-library");
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // ===== PATHS & SETUP =====
 const ROOT_DIR   = path.join(__dirname, "..");
