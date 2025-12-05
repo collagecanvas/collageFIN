@@ -2,7 +2,6 @@
   "name": "collagecanvas",
   "version": "1.0.0",
   "description": "node app ",
-  "main": "main.js",
   "private": true,
   "scripts": {
   "start": "node backend/server.js"
