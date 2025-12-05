@@ -1,18 +1,15 @@
 {
-  "name": "backend",
+  "name": "collagecanvas",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "node app ",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "better-sqlite3": "^12.4.6",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "google-auth-library": "^10.5.0"
-  }
+  "start": "node main.js"
+},
+  "repository": {
+  "type": "git",
+  "url": " https://collagecanvas.github.io/collageFIN/collagecanvas.git"
+},
+  
+  "homepage": " https://collagecanvas.github.io/collageFIN/"
 }
