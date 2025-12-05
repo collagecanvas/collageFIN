@@ -6,6 +6,10 @@
   "scripts": {
   "start": "node backend/server.js"
 },
+   "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+},
    "dependencies": {
     "express": "^4.21.0",
     "better-sqlite3": "^9.0.0",
