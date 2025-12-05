@@ -2,7 +2,7 @@
   "name": "collagecanvas",
   "version": "1.0.0",
   "description": "node app ",
-  "main": "server.js",
+  "main": "main.js",
   "scripts": {
   "start": "node server.js"
 },
@@ -12,4 +12,5 @@
 },
   
   "homepage": " https://collagecanvas.github.io/collageFIN/"
+
 }
