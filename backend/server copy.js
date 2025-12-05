@@ -6,16 +6,7 @@ const path     = require("path");
 const fs       = require("fs");
 const Database = require("better-sqlite3");
 
-// ===== START SERVER =====
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
- console.log(`Server listening on port ${PORT}`);
-});
 
-// ===== FALLBACK (Express 5-safe) =====
-app.use((req, res) => {
-  res.sendFile(path.join(ROOT_DIR, "index.html"));
-});
 
 // ===== Google Login (GIS token verify) =====
 const { OAuth2Client } = require("google-auth-library");
@@ -702,10 +693,10 @@ app.delete("/api/binders/:id", (req, res) => {
 });
 
 
-// // ===== FALLBACK (Express 5-safe) =====
-// app.use((req, res) => {
-//   res.sendFile(path.join(ROOT_DIR, "index.html"));
-// });
+// ===== FALLBACK (Express 5-safe) =====
+app.use((req, res) => {
+  res.sendFile(path.join(ROOT_DIR, "index.html"));
+});
 
 
 // ===== START SERVER =====
@@ -713,9 +704,9 @@ app.delete("/api/binders/:id", (req, res) => {
 //   console.log(`Collage Canvas backend listening on http://localhost:${PORT}`);
 // });
 
-// app.listen(PORT, () => {
-//   console.log("Server running on port " + PORT);
-// });
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});
 
 // ===== GOOGLE ID TOKEN LOGIN =====
 
