@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const query = new URLSearchParams(merged);
-    const url = `/api/collages${query.toString() ? "?" + query.toString() : ""}`;
+    const url = `${API_BASE}/api/collages${query.toString() ? "?" + query.toString() : ""}`;
 
     try {
       const res = await fetch(url);
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchBinders(params = {}) {
     const query = new URLSearchParams(params);
-    const url = `/api/binders${query.toString() ? "?" + query.toString() : ""}`;
+    const url = `${API_BASE}/api/binders${query.toString() ? "?" + query.toString() : ""}`;
 
     try {
       const res = await fetch(url);
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!binderId) return [];
     try {
       const res = await fetch(
-        `/api/binders/${encodeURIComponent(binderId)}/collages`
+        `${API_BASE}/api/binders/${encodeURIComponent(binderId)}/collages`
       );
       if (!res.ok) {
         console.error("Failed to fetch binder collages", res.status);
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function updateCollageVisibility(collageId, visibility) {
     try {
-      const res = await fetch(`/api/collages/${encodeURIComponent(collageId)}`, {
+      const res = await fetch(`${API_BASE}/api/collages/${encodeURIComponent(collageId)}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ visibility }),
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!go) return false;
 
     try {
-      const res = await fetch(`/api/collages/${encodeURIComponent(collageId)}`, {
+      const res = await fetch(`${API_BASE}/api/collages/${encodeURIComponent(collageId)}`, {
         method: "DELETE",
       });
 
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch(`/api/collages/${encodeURIComponent(collage.id)}/like`, {
+      const res = await fetch(`${API_BASE}/api/collages/${encodeURIComponent(collage.id)}/like`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: CURRENT_USER_ID }),
@@ -788,7 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch(`/api/profile/${encodeURIComponent(CURRENT_USER_ID)}`);
+      const res = await fetch(`${API_BASE}/api/profile/${encodeURIComponent(CURRENT_USER_ID)}`);
       if (!res.ok) {
         console.error("Failed to load profile", res.status);
         return;
@@ -966,7 +966,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const res = await fetch(`/api/profile/${encodeURIComponent(CURRENT_USER_ID)}`, {
+        const res = await fetch(`${API_BASE}/api/profile/${encodeURIComponent(CURRENT_USER_ID)}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),

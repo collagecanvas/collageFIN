@@ -96,10 +96,10 @@ function binderResetToFresh(userId) {
 async function binderLoadUserCollages(userId) {
   const [privates, publics] = await Promise.all([
     binderFetchJSON(
-      `/api/collages?owner=${encodeURIComponent(userId)}&visibility=private`
+      `${API_BASE}/api/collages?owner=${encodeURIComponent(userId)}&visibility=private`
     ),
     binderFetchJSON(
-      `/api/collages?owner=${encodeURIComponent(userId)}&visibility=public`
+      `${API_BASE}/api/collages?owner=${encodeURIComponent(userId)}&visibility=public`
     ),
   ]);
 
@@ -271,7 +271,7 @@ async function binderSave(visibility) {
 
   try {
     await binderFetchJSON(
-      `/api/binders/${encodeURIComponent(binderState.binderId)}`,
+      `${API_BASE}/api/binders/${encodeURIComponent(binderState.binderId)}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -307,7 +307,7 @@ async function binderUploadCoverFromFile(file) {
     const dataUrl = reader.result;
 
     try {
-      const created = await binderFetchJSON("/api/collages", {
+      const created = await binderFetchJSON("${API_BASE}/api/collages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

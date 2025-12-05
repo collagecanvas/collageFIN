@@ -1,9 +1,3 @@
-// ================== API BASE ==================
-const API_BASE =
-  window.location.hostname.includes("localhost")
-    ? "http://localhost:4000" // local dev with Node server
-    : "https://collagecanvas-105e16bc460c.herokuapp.com";
-
 // ================== ASSETS ==================
 let APP_IMAGES = [];
 let APP_BACKGROUNDS = [];
@@ -22,8 +16,7 @@ let HAS_SAVED_CURRENT = false;
 
 // ================== LOAD ASSETS ==================
 async function loadAssets() {
-  // const res = await fetch("/api/assets");
-   const res = await fetch(`${API_BASE}/api/assets`);
+  const res = await fetch("/api/assets");
   if (!res.ok) throw new Error("Failed to load /api/assets");
   const data = await res.json();
 
@@ -658,8 +651,7 @@ async function saveCollageToServer(visibility) {
   try {
     const imageData = await captureCollageAsPng();
 
-    // const res = await fetch("/api/collages", {
-    const res = await fetch(`${API_BASE}/api/collages`, {
+    const res = await fetch("/api/collages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

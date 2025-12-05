@@ -146,7 +146,7 @@ export function initAuth() {
       }
 
       try {
-        const res = await fetch("/api/auth/login", {
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
@@ -203,7 +203,7 @@ export function initAuth() {
       }
 
       try {
-        const res = await fetch("/api/auth/signup", {
+        const res = await fetch(`${API_BASE}/api/auth/signup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
@@ -362,13 +362,14 @@ let isGoogleInitialized = false;
         }
 
         try {
-          const res = await fetch("/api/auth/google", {
+          const res = await fetch(`${API_BASE}/api/auth/google`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ credential, mode }),
           });
 
-          console.log("[auth] /api/auth/google status =", res.status);
+          console.log(`[auth] ${API_BASE}/api/auth/google status =`, res.status);
+
 
           if (!res.ok) {
             showError("Google sign-in failed.");
